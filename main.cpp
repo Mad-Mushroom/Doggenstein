@@ -1,3 +1,10 @@
+/*
+     Doggenstein Alpha 0.2
+
+     GNU Generic Public License v3.0
+     Made by MadMushroom
+*/
+
 /* Including Headers */
 #include "main.h"
 #include "levels.h"
