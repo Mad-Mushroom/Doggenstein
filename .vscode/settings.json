@@ -1,0 +1,10 @@
+{
+ "files.associations": {
+    "*.ppm": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "fstream": "cpp",
+    "random": "cpp",
+    "cmath": "cpp"
+}
+}
