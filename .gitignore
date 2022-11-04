@@ -1,3 +1,2 @@
 .vscode
-build-release.bat
-build.bat
+*.bat
