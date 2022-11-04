@@ -1,2 +1,5 @@
 .vscode
 *.bat
+*.exe
+*.rc
+*.res
