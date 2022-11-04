@@ -36,6 +36,7 @@ float fade=0;
 int currentLevel=1;
 int mainMenuActive=0;
 int existingLevels = 2;
+string version = "Aplha 0.2";
 
 //timer+=1*fps; if(timer>2000){ timer=0;}
 
@@ -571,7 +572,7 @@ void resize(int w,int h){
 }
 
 void startup(){
-     cout << "=== Doggenstein Startup ===" << endl;
+     cout << "=== Doggenstein " << version << " Startup ===" << endl;
      cout << "Starting Engine..." << endl;
      for(int timer=0; timer<3000; timer+=1){
           if(timer==2000){
