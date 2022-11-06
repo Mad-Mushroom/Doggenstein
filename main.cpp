@@ -171,26 +171,26 @@ bool loadGame(int saveSlot){
           cycle++;
      }
 
-     if(currentLevel > existingLevels){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.Health > 100){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownPistol > 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownShotgun > 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownMG > 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownMinigun > 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.pistolAmmo > 99){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.shotgunAmmo > 99){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.mgAmmo > 999){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.minigunAmmo > 999){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(currentLevel < 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.Health < 1){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownPistol < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownShotgun < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownMG < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(player.ownMinigun < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.pistolAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.shotgunAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.mgAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
-     else if(playerAmmo.minigunAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=8; return false; }
+     if(currentLevel > existingLevels){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.Health > 100){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownPistol > 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownShotgun > 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownMG > 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownMinigun > 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.pistolAmmo > 99){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.shotgunAmmo > 99){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.mgAmmo > 999){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.minigunAmmo > 999){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(currentLevel < 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.Health < 1){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownPistol < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownShotgun < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownMG < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(player.ownMinigun < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.pistolAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.shotgunAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.mgAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
+     else if(playerAmmo.minigunAmmo < 0){ cout << "Corrupt Savefile." << endl; gameState=7; return false; }
      else { return true; }
 }
 
@@ -410,15 +410,6 @@ void drawSky(){
  }
 }
 
-void errorScreen(){
-     for(int y=0;y<640;y++){
-          for(int x=0;x<960;x++){
-               glPointSize(8); glColor3ub(255,0,0); glBegin(GL_POINTS); glVertex2i(x,y); glEnd();
-          }
-     }
-     PrintLn("ERROR", 10, 96, 256-64);
-}
-
 void screen(int v){
  int x,y;
  int *T;
@@ -553,9 +544,8 @@ void display(){
  if(gameState==3){ screen(2); timer+=1*fps; if(timer>2000){ fade=0; timer=0; currentLevel++; loadLevel(currentLevel); gameState=2;}} //won screen
  if(gameState==4){ screen(3); timer+=1*fps; if(timer>2000){ fade=0; timer=0; gameState=0;}} //lost screen
  if(gameState==5){ pauseScreen(); }
- if(gameState==6){ glutSetWindowTitle("You can safely close the Application now."); cout << "You can safely close the Application now." << endl; gameState=7; }
- if(gameState==7){  }
- if(gameState==8){ glutSetWindowTitle("Error during execution of Doggenstein."); errorScreen(); }
+ if(gameState==6){ glutDestroyWindow(1); }
+ if(gameState==7){ cout << "Error during execution of Doggenstein" << endl; glutDestroyWindow(1); }
 
  glutPostRedisplay();
  glutSwapBuffers();
