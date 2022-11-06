@@ -16,6 +16,7 @@
 #include "Textures/won.ppm"
 #include "Textures/lost.ppm"
 #include "Textures/sprites.ppm"
+#include "Textures/StatsBar.ppm"
 #include "Textures/Bitmap.ppm"
 
 /* define Variables */
@@ -274,6 +275,21 @@ void saveGame(int saveSlot){
  }
 }*/
 
+void drawStatsBar(){
+     int x=0,y=65;
+     for(y=65;y<81;y++)
+     {
+          for(x=0;x<120;x++)
+          {
+               int pixel =((y-65)*120+x)*3;
+               int red   =StatsBar[pixel+0];
+               int green =StatsBar[pixel+1];
+               int blue  =StatsBar[pixel+2];
+               glPointSize(8); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
+          }	
+     }
+}
+
 void drawRays2D(){	
  int r,mx,my,mp,dof/*,side*/; float vx,vy,rx,ry,ra,xo,yo,disV,disH; 
  
@@ -508,6 +524,7 @@ void display(){
   } 
   drawSky();
   drawRays2D();
+  drawStatsBar();
   //drawSprite();
  }
 
