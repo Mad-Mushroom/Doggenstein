@@ -298,6 +298,9 @@ void drawStatsBar(){
                glPointSize(8); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
           }	
      }
+     PrintLn("999", 3, 20, (640-(16*5))); // Ammo
+     PrintLn("999", 3, (640-58), (640-(16*5))); // Armor
+     PrintLn("999", 3, 780, (640-(16*5))); // Health
 }
 
 void drawRays2D(){	
