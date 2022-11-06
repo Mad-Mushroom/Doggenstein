@@ -73,9 +73,15 @@ int to_int(string str){
 
 void PutChar(char character, int size, int posX, int posY){
      int charIndex=0;
-     char allChars[]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','!','?','.',};
-     for(int i=0; i<29; i++){
+     char allChars[]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','!','?','.','0','1','2','3','4','5','6','7','8','9',' ',};
+     for(int i=0; i<40; i++){
           if(character == allChars[i]){
+               charIndex = i;
+          }
+     }
+      char allSmallChars[]={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','!','?','.','0','1','2','3','4','5','6','7','8','9',' ',};
+     for(int i=0; i<40; i++){
+          if(character == allSmallChars[i]){
                charIndex = i;
           }
      }
@@ -83,15 +89,19 @@ void PutChar(char character, int size, int posX, int posY){
      int x=0,y=0;
      for(y=0;y<16;y++){
           for(x=0;x<16;x++){
-               int sx = x+16*charIndex;
-               int pixel=(y*464+sx)*3;
-               int red   =Bitmap[pixel+0];
-               int green =Bitmap[pixel+1];
-               int blue  =Bitmap[pixel+2];
-               if(red == 255 && green == 0 && blue == 255){
-                    //glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
+               if(charIndex==39){
+
                }else{
-                    glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
+                    int sx = x+16*charIndex;
+                    int pixel=(y*624+sx)*3;
+                    int red   =Bitmap[pixel+0];
+                    int green =Bitmap[pixel+1];
+                    int blue  =Bitmap[pixel+2];
+                    if(red == 255 && green == 0 && blue == 255){
+                         //glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
+                    }else{
+                         glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
+                    }
                }
           }	
      }
@@ -536,7 +546,7 @@ void display(){
  if(gameState==8){ glutSetWindowTitle("Error during execution of Doggenstein.");}
 
  glutPostRedisplay();
- glutSwapBuffers();  
+ glutSwapBuffers();
 }
 
 void ButtonDown(unsigned char key,int x,int y){
