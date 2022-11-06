@@ -1,5 +1,5 @@
 /*
-     Doggenstein Alpha 0.2
+     Doggenstein
 
      GNU Generic Public License v3.0
      Made by MadMushroom
@@ -100,7 +100,7 @@ void PutChar(char character, int size, int posX, int posY){
                     if(red == 255 && green == 0 && blue == 255){
                          //glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
                     }else{
-                         glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+posX,y*size+posY); glEnd();
+                         glPointSize(size); glColor3ub(red,green,blue); glBegin(GL_POINTS); glVertex2i(x*size+(posX),y*size+(posY)); glEnd();
                     }
                }
           }	
@@ -410,6 +410,15 @@ void drawSky(){
  }
 }
 
+void errorScreen(){
+     for(int y=0;y<640;y++){
+          for(int x=0;x<960;x++){
+               glPointSize(8); glColor3ub(255,0,0); glBegin(GL_POINTS); glVertex2i(x,y); glEnd();
+          }
+     }
+     PrintLn("ERROR", 10, 96, 256-64);
+}
+
 void screen(int v){
  int x,y;
  int *T;
@@ -546,7 +555,7 @@ void display(){
  if(gameState==5){ pauseScreen(); }
  if(gameState==6){ glutSetWindowTitle("You can safely close the Application now."); cout << "You can safely close the Application now." << endl; gameState=7; }
  if(gameState==7){  }
- if(gameState==8){ glutSetWindowTitle("Error during execution of Doggenstein.");}
+ if(gameState==8){ glutSetWindowTitle("Error during execution of Doggenstein."); errorScreen(); }
 
  glutPostRedisplay();
  glutSwapBuffers();
