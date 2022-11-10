@@ -37,7 +37,7 @@ float fade=0;
 int currentLevel=1;
 int mainMenuActive=0;
 int existingLevels = 2;
-string version = "Aplha 0.2";
+int menuSelect = 1, menuCanMove = 1;
 
 //timer+=1*fps; if(timer>2000){ timer=0;}
 
@@ -471,28 +471,29 @@ void pauseScreen(){
 }
 
 void mainMenu(){
-     gameState=5;
-     mainMenuActive=1;
-     screen(1);
-     int select=0;
-     cout << "" << endl;
-     cout << "== Doggenstein Temp Menu ==" << endl;
-     cout << "" << endl;
-     cout << "1 New Game" << endl;
-     cout << "2 Load Game" << endl;
-     cout << "3 Settings" << endl;
-     cout << "4 Readme" << endl;
-     cout << "5 Quit" << endl;
+     int x,y;
+     for(y=0;y<80;y++){
+          for(x=0;x<120;x++){
+               glPointSize(8); glColor3ub(0,0,255); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
+          }	
+     }
 
-     cin >> select;
+     PrintLn("New Game", 2, 400, 200);
+     PrintLn("Load Game", 2, 400, 200+(40*1));
+     PrintLn("Settings", 2, 400, 200+(40*2));
+     PrintLn("Readme", 2, 400, 200+(40*3));
+     PrintLn("Quit", 2, 400, 200+(40*4));
 
-     if(select==1){ currentLevel=1; gameState=2; fade=0; }
-     if(select==2){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
-     if(select==3){ gameState=2; fade=0; }
-     if(select==4){ gameState=2; fade=0; }
-     if(select==5){ gameState=6; }
-     
-     //if(Keys.anyKey == 1){ gameState=2; fade=0; }
+     PutChar('?', 2, 368, 200+(40*(menuSelect-1)));
+
+     if(Keys.w == 1 && menuSelect > 1 && menuCanMove == 1){ menuSelect -= 1; menuCanMove = 0; }
+     if(Keys.s == 1 && menuSelect < 5 && menuCanMove == 1){ menuSelect += 1; menuCanMove = 0; }
+
+     if(Keys.e == 1 && menuSelect == 1){ currentLevel=1; gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 2){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
+     if(Keys.e == 1 && menuSelect == 3){ gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 4){ gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 5){ gameState=6; }
 }
 
 void init(){
@@ -545,7 +546,7 @@ void display(){
  if(gameState==4){ screen(3); timer+=1*fps; if(timer>2000){ fade=0; timer=0; gameState=0;}} //lost screen
  if(gameState==5){ pauseScreen(); }
  if(gameState==6){ glutDestroyWindow(1); }
- if(gameState==7){ cout << "Error during execution of Doggenstein" << endl; glutDestroyWindow(1); }
+ if(gameState==7){ cout << "Error during execution of Doggenstein!" << endl; glutDestroyWindow(1); }
 
  glutPostRedisplay();
  glutSwapBuffers();
@@ -564,6 +565,7 @@ void ButtonDown(unsigned char key,int x,int y){
  if(key==GLUT_KEY_RIGHT){ Keys.right=1; }
  if(key=='e' /*&& sp[0].state==0*/)             //open doors
  { 
+  Keys.e = 1;
   int xo=0; if(pdx<0){ xo=-25;} else{ xo=25;}
   int yo=0; if(pdy<0){ yo=-25;} else{ yo=25;} 
   /*int ipx=px/64.0,*/ int ipx_add_xo=(px+xo)/64.0;
@@ -583,12 +585,14 @@ void ButtonDown(unsigned char key,int x,int y){
 }
 
 void ButtonUp(unsigned char key,int x,int y){
+ menuCanMove = 1;
  Keys.anyKey = 0;
  if(key=='a'){ Keys.a=0;} 	
  if(key=='d'){ Keys.d=0;} 
  if(key=='w'){ Keys.w=0;}
  if(key=='s'){ Keys.s=0;}
  if(key=='q'){ Keys.q=0;}
+ if(key=='e'){ Keys.e=0;}
  if(key==GLUT_KEY_UP){ Keys.up=0;}
  if(key==GLUT_KEY_DOWN){ Keys.down=0;}
  if(key==GLUT_KEY_LEFT){ Keys.left=0;}
@@ -601,7 +605,7 @@ void resize(int w,int h){
 }
 
 void startup(){
-     cout << "=== Doggenstein " << version << " Startup ===" << endl;
+     cout << "=== Doggenstein Startup ===" << endl;
      cout << "Starting Engine..." << endl;
      for(int timer=0; timer<3000; timer+=1){
           if(timer==2000){
