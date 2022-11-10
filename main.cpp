@@ -444,6 +444,19 @@ void showLoadScreen(){
      }
 }
 
+void init(){
+ glClearColor(0.3,0.3,0.3,0);
+ px=150; py=200; pa=90;
+ pdx=cos(degToRad(pa)); pdy=-sin(degToRad(pa));
+
+ loadLevel(currentLevel);
+
+ //sp[0].type=1; sp[0].state=1; sp[0].map=0; sp[0].x=1.5*64; sp[0].y=5*64;   sp[0].z=20; //key
+ //sp[1].type=2; sp[1].state=1; sp[1].map=1; sp[1].x=1.5*64; sp[1].y=4.5*64; sp[1].z= 0; //light 1
+ //sp[2].type=2; sp[2].state=1; sp[2].map=1; sp[2].x=3.5*64; sp[2].y=4.5*64; sp[2].z= 0; //light 2
+ //sp[3].type=3; sp[3].state=1; sp[3].map=2; sp[3].x=2.5*64; sp[3].y=2*64;   sp[3].z=20; //enemy
+}
+
 void pauseScreen(){
      int x,y;
      for(y=0;y<80;y++){
@@ -451,23 +464,25 @@ void pauseScreen(){
                glPointSize(8); glColor3ub(0,0,255); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
           }	
      }
-     int select=0;
-     cout << "" << endl;
-     cout << "== Doggenstein Temp Menu ==" << endl;
-     cout << "" << endl;
-     cout << "1 New Game" << endl;
-     cout << "2 Load Game" << endl;
-     cout << "3 Save Game" << endl;
-     cout << "4 Settings" << endl;
-     cout << "5 Quit" << endl;
 
-     cin >> select;
+     PrintLn("Continue", 2, 400, 200);
+     PrintLn("New Game", 2, 400, 200+(40*1));
+     PrintLn("Save Game", 2, 400, 200+(40*2));
+     PrintLn("Load Game", 2, 400, 200+(40*3));
+     PrintLn("Settings", 2, 400, 200+(40*4));
+     PrintLn("Quit", 2, 400, 200+(40*5));
 
-     if(select==1){ currentLevel=1; glClearColor(0.3,0.3,0.3,0); px=150; py=200; pa=90; pdx=cos(degToRad(pa)); pdy=-sin(degToRad(pa)); loadLevel(currentLevel); gameState=2; fade=0; }
-     if(select==2){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
-     if(select==3){ int saveSlot=0; cin >> saveSlot; saveGame(saveSlot); gameState=2; fade=0; }
-     if(select==4){ gameState=2; fade=0; }
-     if(select==5){ gameState=6; }
+     PutChar('?', 2, 368, 200+(40*(menuSelect-1)));
+
+     if(Keys.w == 1 && menuSelect > 1 && menuCanMove == 1){ menuSelect -= 1; menuCanMove = 0; }
+     if(Keys.s == 1 && menuSelect < 6 && menuCanMove == 1){ menuSelect += 1; menuCanMove = 0; }
+
+     if(Keys.e == 1 && menuSelect == 1){ gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 2){ currentLevel=1; init(); gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 3){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
+     if(Keys.e == 1 && menuSelect == 4){ int saveSlot=0; cin >> saveSlot; saveGame(saveSlot); gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 5){ gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 6){ gameState=6; }
 }
 
 void mainMenu(){
@@ -489,24 +504,11 @@ void mainMenu(){
      if(Keys.w == 1 && menuSelect > 1 && menuCanMove == 1){ menuSelect -= 1; menuCanMove = 0; }
      if(Keys.s == 1 && menuSelect < 5 && menuCanMove == 1){ menuSelect += 1; menuCanMove = 0; }
 
-     if(Keys.e == 1 && menuSelect == 1){ currentLevel=1; gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 1){ currentLevel=1; init(); gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 2){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
      if(Keys.e == 1 && menuSelect == 3){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 4){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 5){ gameState=6; }
-}
-
-void init(){
- glClearColor(0.3,0.3,0.3,0);
- px=150; py=200; pa=90;
- pdx=cos(degToRad(pa)); pdy=-sin(degToRad(pa));
-
- loadLevel(currentLevel);
-
- //sp[0].type=1; sp[0].state=1; sp[0].map=0; sp[0].x=1.5*64; sp[0].y=5*64;   sp[0].z=20; //key
- //sp[1].type=2; sp[1].state=1; sp[1].map=1; sp[1].x=1.5*64; sp[1].y=4.5*64; sp[1].z= 0; //light 1
- //sp[2].type=2; sp[2].state=1; sp[2].map=1; sp[2].x=3.5*64; sp[2].y=4.5*64; sp[2].z= 0; //light 2
- //sp[3].type=3; sp[3].state=1; sp[3].map=2; sp[3].x=2.5*64; sp[3].y=2*64;   sp[3].z=20; //enemy
 }
 
 void display(){  
@@ -545,7 +547,7 @@ void display(){
  if(gameState==3){ screen(2); timer+=1*fps; if(timer>2000){ fade=0; timer=0; currentLevel++; loadLevel(currentLevel); gameState=2;}} //won screen
  if(gameState==4){ screen(3); timer+=1*fps; if(timer>2000){ fade=0; timer=0; gameState=0;}} //lost screen
  if(gameState==5){ pauseScreen(); }
- if(gameState==6){ glutDestroyWindow(1); }
+ if(gameState==6){ glutDestroyWindow(1); cout << "" << endl; cout << "Goodbye! :)" << endl; }
  if(gameState==7){ cout << "Error during execution of Doggenstein!" << endl; glutDestroyWindow(1); }
 
  glutPostRedisplay();
