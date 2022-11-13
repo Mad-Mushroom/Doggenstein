@@ -107,13 +107,11 @@ void PutChar(char character, int size, int posX, int posY){
      }
 }
 
-void PrintLn(char* str, int size, int posX, int posY){
+void PrintLn(string str, int size, int posX, int posY){
      int x=0;
-     char* chr = str;
-     while(*chr != 0){
-          PutChar(*chr, size, posX+x, posY);
+     for(int i = 0; i < str.length(); i++){
+          PutChar(str[i], size, posX+x, posY);
           x+=size*16;
-          chr++;
      }
 }
 
@@ -457,6 +455,23 @@ void init(){
  //sp[3].type=3; sp[3].state=1; sp[3].map=2; sp[3].x=2.5*64; sp[3].y=2*64;   sp[3].z=20; //enemy
 }
 
+void Readme(){
+     int x,y;
+     for(y=0;y<80;y++){
+          for(x=0;x<120;x++){
+               glPointSize(8); glColor3ub(0,0,255); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
+          }
+     }
+     ifstream inputFile;
+     string loadedContent;
+     int cycle=0;
+     inputFile.open("RMT.dtf");
+     while(getline(inputFile, loadedContent)){
+          PrintLn(loadedContent, 1, 1, 1+(20*cycle));
+          cycle++;
+     }
+}
+
 void pauseScreen(){
      int x,y;
      for(y=0;y<80;y++){
@@ -490,7 +505,7 @@ void mainMenu(){
      for(y=0;y<80;y++){
           for(x=0;x<120;x++){
                glPointSize(8); glColor3ub(0,0,255); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
-          }	
+          }
      }
 
      PrintLn("New Game", 2, 400, 200);
@@ -507,7 +522,7 @@ void mainMenu(){
      if(Keys.e == 1 && menuSelect == 1){ currentLevel=1; init(); gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 2){ saveSubmit = 0; tryingToLoad=1; selectingSaveSlot = 1; }
      if(Keys.e == 1 && menuSelect == 3){ gameState=2; fade=0; }
-     if(Keys.e == 1 && menuSelect == 4){ gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 4){ Readme(); }
      if(Keys.e == 1 && menuSelect == 5){ gameState=6; }
 }
 
