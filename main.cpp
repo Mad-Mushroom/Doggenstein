@@ -37,7 +37,7 @@ float fade=0;
 int currentLevel=1;
 int mainMenuActive=0;
 int existingLevels = 2;
-int menuSelect = 1, menuCanMove = 1;
+int menuSelect = 1, menuCanMove = 1, saveSubmit = 1, selectingSaveSlot = 0, selectedSlot = 0, tryingToSave = 0, tryingToLoad = 0;
 
 //timer+=1*fps; if(timer>2000){ timer=0;}
 
@@ -479,8 +479,8 @@ void pauseScreen(){
 
      if(Keys.e == 1 && menuSelect == 1){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 2){ currentLevel=1; init(); gameState=2; fade=0; }
-     if(Keys.e == 1 && menuSelect == 3){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
-     if(Keys.e == 1 && menuSelect == 4){ int saveSlot=0; cin >> saveSlot; saveGame(saveSlot); gameState=2; fade=0; }
+     if(Keys.e == 1 && menuSelect == 3){ saveSubmit = 0; tryingToSave=1; selectingSaveSlot = 1; }
+     if(Keys.e == 1 && menuSelect == 4){ saveSubmit = 0; tryingToLoad=1; selectingSaveSlot = 1; }
      if(Keys.e == 1 && menuSelect == 5){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 6){ gameState=6; }
 }
@@ -505,7 +505,7 @@ void mainMenu(){
      if(Keys.s == 1 && menuSelect < 5 && menuCanMove == 1){ menuSelect += 1; menuCanMove = 0; }
 
      if(Keys.e == 1 && menuSelect == 1){ currentLevel=1; init(); gameState=2; fade=0; }
-     if(Keys.e == 1 && menuSelect == 2){ int saveSlot=0; cin >> saveSlot; if(loadGame(saveSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; } }
+     if(Keys.e == 1 && menuSelect == 2){ saveSubmit = 0; tryingToLoad=1; selectingSaveSlot = 1; }
      if(Keys.e == 1 && menuSelect == 3){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 4){ gameState=2; fade=0; }
      if(Keys.e == 1 && menuSelect == 5){ gameState=6; }
@@ -537,7 +537,7 @@ void display(){
   { 
    if(mapW[ipy*mapX        + ipx_sub_xo]==0){ px-=pdx*0.2*fps;}
    if(mapW[ipy_sub_yo*mapX + ipx       ]==0){ py-=pdy*0.2*fps;}
-  } 
+  }
   drawSky();
   drawRays2D();
   drawStatsBar();
@@ -549,6 +549,30 @@ void display(){
  if(gameState==5){ pauseScreen(); }
  if(gameState==6){ glutDestroyWindow(1); cout << "" << endl; cout << "Goodbye! :)" << endl; }
  if(gameState==7){ cout << "Error during execution of Doggenstein!" << endl; glutDestroyWindow(1); }
+
+ if(selectingSaveSlot == 1){
+     int x,y;
+     for(y=0;y<80;y++){
+          for(x=0;x<120;x++){
+               glPointSize(8); glColor3ub(0,0,255); glBegin(GL_POINTS); glVertex2i(x*8,y*8); glEnd();
+          }	
+     }
+     PrintLn("Saveslot 1", 2, 400, 200);
+     PrintLn("Saveslot 2", 2, 400, 200+(40*1));
+     PrintLn("Saveslot 3", 2, 400, 200+(40*2));
+     PrintLn("Saveslot 4", 2, 400, 200+(40*3));
+     PrintLn("Saveslot 5", 2, 400, 200+(40*4));
+     PutChar('?', 2, 368, 200+(40*(menuSelect-1)));
+     if(Keys.w == 1 && menuSelect > 1 && menuCanMove == 1){ menuSelect -= 1; menuCanMove = 0; }
+     if(Keys.s == 1 && menuSelect < 5 && menuCanMove == 1){ menuSelect += 1; menuCanMove = 0; }
+     if(Keys.e == 1 && menuSelect == 1 && saveSubmit == 1){ selectedSlot = 1; selectingSaveSlot=0; }
+     if(Keys.e == 1 && menuSelect == 2 && saveSubmit == 1){ selectedSlot = 2; selectingSaveSlot=0; }
+     if(Keys.e == 1 && menuSelect == 3 && saveSubmit == 1){ selectedSlot = 3; selectingSaveSlot=0; }
+     if(Keys.e == 1 && menuSelect == 4 && saveSubmit == 1){ selectedSlot = 4; selectingSaveSlot=0; }
+     if(Keys.e == 1 && menuSelect == 5 && saveSubmit == 1){ selectedSlot = 5; selectingSaveSlot=0; }
+     if(tryingToSave == 1 && selectedSlot > 0){ saveGame(selectedSlot); gameState=2; fade=0;  selectedSlot=0; tryingToSave=0; }
+     if(tryingToLoad == 1 && selectedSlot > 0){ if(loadGame(selectedSlot) == true){ loadLevel(currentLevel); gameState=2; fade=0; selectedSlot=0; tryingToLoad=0; } }
+  }
 
  glutPostRedisplay();
  glutSwapBuffers();
@@ -588,6 +612,7 @@ void ButtonDown(unsigned char key,int x,int y){
 
 void ButtonUp(unsigned char key,int x,int y){
  menuCanMove = 1;
+ saveSubmit = 1;
  Keys.anyKey = 0;
  if(key=='a'){ Keys.a=0;} 	
  if(key=='d'){ Keys.d=0;} 
