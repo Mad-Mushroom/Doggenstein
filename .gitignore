@@ -6,3 +6,5 @@
 *.bmp
 *.png
 *.dsg
+main
+.DS_Store
