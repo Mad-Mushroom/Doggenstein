@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <GL/glut.h>
+#include <GLUT/glut.h>
 #include <math.h>
 #include <iostream>
 
