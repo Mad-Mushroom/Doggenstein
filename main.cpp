@@ -225,8 +225,7 @@ void saveGame(int saveSlot){
      fileOutput << (playerAmmo.minigunAmmo + 4585) << endl;
 }
 
-/*void drawSprite()
-{
+/*void drawSprite(){
  int x,y,s;
  if(px<sp[0].x+30 && px>sp[0].x-30 && py<sp[0].y+30 && py>sp[0].y-30){ sp[0].state=0;} //pick up key 	
  if(px<sp[3].x+30 && px>sp[3].x-30 && py<sp[3].y+30 && py>sp[3].y-30){ gameState=4;} //enemy kills
