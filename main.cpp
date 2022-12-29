@@ -53,7 +53,7 @@ typedef struct{
 }sprite; sprite sp[4];
 
 typedef struct{
-     int Health=100;
+     int Health=100, Armor=0;
      int ownPistol=1, ownShotgun=0, ownMG=0, ownMinigun=0;
 }plr; plr player;
 
@@ -554,7 +554,7 @@ void display(){
   }
   drawSky();
   drawRays2D();
-  drawStatsBar();
+  //drawStatsBar();
   //drawSprite();
  }
 
