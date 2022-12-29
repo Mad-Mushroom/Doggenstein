@@ -54,11 +54,11 @@ typedef struct{
 
 typedef struct{
      int Health=100;
-     int ownPistol=1,ownShotgun=0,ownMG=0,ownMinigun=0;
+     int ownPistol=1, ownShotgun=0, ownMG=0, ownMinigun=0;
 }plr; plr player;
 
 typedef struct{
-     int pistolAmmo=0,shotgunAmmo=0,mgAmmo=0,minigunAmmo=0;
+     int pistolAmmo=0, shotgunAmmo=0, mgAmmo=0, minigunAmmo=0;
 }ammo; ammo playerAmmo;
 
 int depth[120];      //hold wall line depth to compare for sprite depth
@@ -297,7 +297,7 @@ void drawStatsBar(){
      }
      PrintLn("999", 3, 20, (640-(16*5))); // Ammo
      PrintLn("999", 3, (640-58), (640-(16*5))); // Armor
-     PrintLn("999", 3, 780, (640-(16*5))); // Health
+     PrintLn("100", 3, 780, (640-(16*5))); // Health
 }
 
 void drawRays2D(){	
